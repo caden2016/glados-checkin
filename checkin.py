@@ -14,15 +14,19 @@ def start():
     url= "https://glados.rocks/api/user/checkin"
     url2= "https://glados.rocks/api/user/status"
     referer = 'https://glados.rocks/console/checkin'
-    checkin = requests.post(url,headers={'cookie': cookie ,'referer': referer },data={"token":"glados.network"})
+
+    headers = {'cookie': cookie ,'referer': referer ,'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0'}
+
+
+    checkin = requests.post(url,headers=headers,data={"token":"glados.one"})
     state =  requests.get(url2,headers={'cookie': cookie ,'referer': referer})
-   # print(res)
+
 
     if 'message' in checkin.text:
         mess = checkin.json()['message']
         time = state.json()['data']['leftDays']
         time = time.split('.')[0]
-        #print(time)
+        print(f'mess:{mess},time:{time}')
         if sever == 'on':
             requests.get('https://sc.ftqq.com/' + sckey + '.send?text='+mess+'，you have '+time+' days left')
     else:
@@ -33,5 +37,3 @@ def main_handler(event, context):
 
 if __name__ == '__main__':
     start()
-
-    
